@@ -4,9 +4,11 @@
  *           sort times for insertion sort, mergesort, and quicksort over 3 runs.
  * Author: Adam Houser
  * ID: 1144
- * Date: 6/4/2020
+ * Date: 6/5/2020
  */
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -15,6 +17,11 @@ public class hw6_2 {
     public static void main(String[] args) {
 
         Scanner in = new Scanner(System.in);
+
+        // for calculating the average of each sort method
+        double iAvg = 0;
+        double mAvg = 0;
+        double qAvg = 0;
 
         System.out.println("Enter input size: ");
 
@@ -36,23 +43,44 @@ public class hw6_2 {
 
         in.close();
 
+        System.out.println("============================================================");
+
         // generate data based on user choice
         if (choice == 1) {
             // this is ascending order start with data[0] = 1 and ascend from there
             for (int i = 0; i < data.length; i++) {
                 data[i] = i+1;
             }
+
+            // printing for format
+            System.out.println("Generate input data in ascending order . . .");
+
         }
-        else {
+        else if (choice == 2) {
             // this is descending order start with last and descend from there ex: for 350 entered data[0] = 350
             // we'll also use this to setup the data and shuffle it for random if they choose 3
             for (int i = 0; i < data.length; i++) {
                 data[i] = data.length - i;
             }
+
+            // printing for format
+            System.out.println("Generate input data in descending order . . .");
         }
-        if (choice == 3) {
-            shuffle(data);
+        else if (choice == 3) {
+            Random rd = new Random();
+
+            for (int i = 0; i < data.length; i++) {
+                data[i] = rd.nextInt();
+            }
+
+            // printing for format
+            System.out.println("Generate input data in random order . . .");
+
         }
+
+        System.out.println("Done.");
+        System.out.println("============================================================");
+        System.out.println();
 
         // prepare arrays for each of the three sorting methods gives them the same data to pull from
         int insertData[] = data.clone();
@@ -60,41 +88,114 @@ public class hw6_2 {
         int quickData[] = data.clone();
 
         // call each sort method the first time
+        System.out.println("========================== 1st Run =========================");
+        Instant iStart1 = Instant.now();
         insertionSort(insertData);
+        Instant iEnd1 = Instant.now();
+        long iDelta1 = Duration.between(iStart1, iEnd1).toMillis();
+        System.out.println("Insertion sort: " + iDelta1 + " milliseconds");
+
+        Instant mStart1 = Instant.now();
         mergeSort(mergeData, 0, mergeData.length - 1);
+        Instant mEnd1 = Instant.now();
+        long mDelta1 = Duration.between(mStart1, mEnd1).toMillis();
+        System.out.println("Merge sort:     " + mDelta1 + " milliseconds");
+
+        Instant qStart1 = Instant.now();
         quickSort(quickData, 0, quickData.length - 1);
+        Instant qEnd1 = Instant.now();
+        long qDelta1 = Duration.between(qStart1, qEnd1).toMillis();
+        System.out.println("Quick sort:     " + qDelta1 + " milliseconds");
 
+        System.out.println("============================================================");
+        System.out.println();
+
+        // add the deltas to the avg
+        iAvg += iDelta1;
+        mAvg += mDelta1;
+        qAvg += qDelta1;
+
+        // reset the arrays for run 2
         for (int i = 0; i < data.length; i++) {
-            System.out.print(data[i] + " ");
+            insertData[i] = data[i];
+            mergeData[i] = data[i];
+            quickData[i] = data[i];
         }
-        System.out.print("\n");
-        for (int i = 0; i < insertData.length; i++) {
-            System.out.print(insertData[i] + " ");
-        }
-        System.out.print("\n");
-        for (int i = 0; i < mergeData.length; i++) {
-            System.out.print(mergeData[i] + " ");
-        }
-        System.out.print("\n");
-        for (int i = 0; i < quickData.length; i++) {
-            System.out.print(quickData[i] + " ");
-        }
-        System.out.print("\n");
-    }
 
-    static void shuffle(int data[]) {
-        // implementation of Fisher-Yates shuffle to generate random number distribution in array
-        Random r = new Random();
+        // call each sort method the second time
+        System.out.println("========================== 2nd Run =========================");
+        Instant iStart2 = Instant.now();
+        insertionSort(insertData);
+        Instant iEnd2 = Instant.now();
+        long iDelta2 = Duration.between(iStart2, iEnd2).toMillis();
+        System.out.println("Insertion sort: " + iDelta2 + " milliseconds");
 
-        for (int i = data.length - 1; i > 0; i--) {
-            // pick a random index from 0 to i
-            int j = r.nextInt(i + 1);
+        Instant mStart2 = Instant.now();
+        mergeSort(mergeData, 0, mergeData.length - 1);
+        Instant mEnd2 = Instant.now();
+        long mDelta2 = Duration.between(mStart2, mEnd2).toMillis();
+        System.out.println("Merge sort:     " + mDelta2 + " milliseconds");
 
-            // swap data[i] with the element at random index
-            int temp = data[i];
-            data[i] = data[j];
-            data[j] = temp;
+        Instant qStart2 = Instant.now();
+        quickSort(quickData, 0, quickData.length - 1);
+        Instant qEnd2 = Instant.now();
+        long qDelta2 = Duration.between(qStart2, qEnd2).toMillis();
+        System.out.println("Quick sort:     " + qDelta2 + " milliseconds");
+
+        System.out.println("============================================================");
+        System.out.println();
+
+        // add the deltas to the avg
+        iAvg += iDelta2;
+        mAvg += mDelta2;
+        qAvg += qDelta2;
+
+        // reset the arrays for run 3
+        for (int i = 0; i < data.length; i++) {
+            insertData[i] = data[i];
+            mergeData[i] = data[i];
+            quickData[i] = data[i];
         }
+
+        // call each sort method the third time
+        System.out.println("========================== 3rd Run =========================");
+        Instant iStart3 = Instant.now();
+        insertionSort(insertData);
+        Instant iEnd3 = Instant.now();
+        long iDelta3 = Duration.between(iStart3, iEnd3).toMillis();
+        System.out.println("Insertion sort: " + iDelta3 + " milliseconds");
+
+        Instant mStart3 = Instant.now();
+        mergeSort(mergeData, 0, mergeData.length - 1);
+        Instant mEnd3 = Instant.now();
+        long mDelta3 = Duration.between(mStart3, mEnd3).toMillis();
+        System.out.println("Merge sort:     " + mDelta3 + " milliseconds");
+
+        Instant qStart3 = Instant.now();
+        quickSort(quickData, 0, quickData.length - 1);
+        Instant qEnd3 = Instant.now();
+        long qDelta3 = Duration.between(qStart3, qEnd3).toMillis();
+        System.out.println("Quick sort:     " + qDelta3 + " milliseconds");
+
+        System.out.println("============================================================");
+        System.out.println();
+
+        // add the deltas to the avg
+        iAvg += iDelta3;
+        mAvg += mDelta3;
+        qAvg += qDelta3;
+
+        // calculate average
+        iAvg = iAvg/3;
+        mAvg = mAvg/3;
+        qAvg = qAvg/3;
+
+        // print results
+        System.out.println("========================== Ranking =========================");
+        System.out.println("iAvg " + iAvg);
+        System.out.println("mAvg " + mAvg);
+        System.out.println("qAvg " + qAvg);
+        System.out.println("============================================================");
     }
 
     // this insersertion sort taken from Geeksforgeeks.org
@@ -233,12 +334,10 @@ public class hw6_2 {
     {
         if (low < high)
         {
-            /* pi is partitioning index, arr[pi] is
-              now at right place */
+            /* pi is partitioning index, arr[pi] is now at right place */
             int pi = partition(arr, low, high);
 
-            // Recursively sort elements before
-            // partition and after partition
+            // Recursively sort elements before partition and after partition
             quickSort(arr, low, pi-1);
             quickSort(arr, pi+1, high);
         }
