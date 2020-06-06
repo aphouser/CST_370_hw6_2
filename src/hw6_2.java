@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class hw6_2 {
 
@@ -294,14 +295,15 @@ public class hw6_2 {
         }
     }
 
-    // this quicksort and partition method taken from Geeksforgeeks.org
+    // this quicksort and partition method taken from Geeksforgeeks.org changed to use random pivot
     // https://www.geeksforgeeks.org/quick-sort/
     /* This function takes last element as pivot, places the pivot element at its correct
        position in sorted array, and places all smaller (smaller than pivot) to left of
        pivot and all greater elements to right of pivot */
     static int partition(int arr[], int low, int high)
     {
-        int pivot = arr[high];
+        int randomNum = ThreadLocalRandom.current().nextInt(low, high + 1);
+        int pivot = arr[randomNum];
         int i = (low-1); // index of smaller element
         for (int j=low; j<high; j++)
         {
