@@ -2,6 +2,7 @@
  * Title: hw6_2.java
  * Abstract: User inputs number for array size and chooses ascending, descending, or random order.  Program them compares
  *           sort times for insertion sort, mergesort, and quicksort over 3 runs.
+ * Source citation: sorting algorithms from geeksforgeeks.org, link above each one below
  * Author: Adam Houser
  * ID: 1144
  * Date: 6/5/2020
@@ -193,9 +194,44 @@ public class hw6_2 {
 
         // print results
         System.out.println("========================== Ranking =========================");
-        System.out.println("iAvg " + iAvg);
-        System.out.println("mAvg " + mAvg);
-        System.out.println("qAvg " + qAvg);
+        double rank1 = Math.min(iAvg, Math.min(mAvg, qAvg));
+        double rank3 = Math.max(iAvg, Math.max(mAvg, qAvg));
+
+        // fastest result
+        System.out.print("(1) ");
+        if (rank1 == iAvg) {
+            System.out.println("Insertion sort");
+        }
+        else if (rank1 == qAvg) {
+            System.out.println("Quick sort");
+        }
+        else {
+            System.out.println("Merge sort");
+        }
+
+        // middle result
+        System.out.print("(2) ");
+        if (iAvg != rank1 && iAvg != rank3) {
+            System.out.println("Insertion sort");
+        }
+        else if (qAvg != rank1 && qAvg != rank3) {
+            System.out.println("Quick sort");
+        }
+        else {
+            System.out.println("Merge sort");
+        }
+
+        // slowest result
+        System.out.print("(3) ");
+        if (rank3 == iAvg) {
+            System.out.println("Insertion sort");
+        }
+        else if (rank3 == qAvg) {
+            System.out.println("Quick sort");
+        }
+        else {
+            System.out.println("Merge sort");
+        }
         System.out.println("============================================================");
     }
 
