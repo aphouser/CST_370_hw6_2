@@ -338,8 +338,16 @@ public class hw6_2 {
        pivot and all greater elements to right of pivot */
     static int partition(int arr[], int low, int high)
     {
-        int randomNum = ThreadLocalRandom.current().nextInt(low, high + 1);
-        int pivot = arr[randomNum];
+        Random rand= new Random();
+        int pivotIndex = rand.nextInt(high - low) + low;
+
+        int temp1=arr[pivotIndex];
+        int temp2 = arr[high];
+        arr[pivotIndex]=temp2;
+        arr[high]=temp1;
+
+        int pivot = arr[high];
+
         int i = (low-1); // index of smaller element
         for (int j=low; j<high; j++)
         {
